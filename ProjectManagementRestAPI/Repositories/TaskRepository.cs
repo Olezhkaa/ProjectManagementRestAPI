@@ -102,14 +102,6 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
-        //Список статусов задач
-        public async Task<IEnumerable<StatusTask>> GetAllStatusTasksAsync()
-        {
-            return await _context.StatusTasks
-                .OrderBy(t => t.Id)
-                .ToListAsync();
-        }
-
         //Список задач в проекте
         public async Task<IEnumerable<Model.Task>> GetTaskByProjectAsync(int idProject)
         {

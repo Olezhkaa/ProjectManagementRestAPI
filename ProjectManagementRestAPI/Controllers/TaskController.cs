@@ -37,13 +37,6 @@ namespace ProjectManagementRestAPI.Controllers
             return task == null ? NotFound() : Ok(task);
         }
 
-        //Просмотр всех статусов задач
-        [HttpGet("StatusTasks")]
-        public async Task<ActionResult<StatusTask>> GetAllStatusTask()
-        {
-            return Ok(await _service.GetAllStatusTasksAsync());
-        }
-
         //Получение всех задач в проекте
         [HttpGet("TaskByProject/{idProject}")]
         public async Task<ActionResult<IEnumerable<Model.Task>>> GetTaskByProject(int idProject)

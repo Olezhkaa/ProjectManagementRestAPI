@@ -26,6 +26,9 @@ namespace ProjectManagementRestAPI
             builder.Services.AddScoped<TaskRepository>();
             builder.Services.AddScoped<TaskService>();
 
+            builder.Services.AddScoped<StatusTaskRepository>();
+            builder.Services.AddScoped<StatusTaskService>();
+
             builder.Services.AddScoped<CommentRepository>();
             builder.Services.AddScoped<CommentService>();
 

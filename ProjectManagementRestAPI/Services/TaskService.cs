@@ -43,10 +43,6 @@ namespace ProjectManagementRestAPI.Services
             return await _repository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<StatusTask>> GetAllStatusTasksAsync()
-        {
-            return await _repository.GetAllStatusTasksAsync();
-        }
         public async Task<IEnumerable<Model.Task>> GetTaskByProjectAsync(int idProject)
         {
             return await _repository.GetTaskByProjectAsync(idProject);
