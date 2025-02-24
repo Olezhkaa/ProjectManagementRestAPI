@@ -14,6 +14,7 @@ namespace ProjectManagementRestAPI.Repositories
             _context = context;
         }
 
+        //Получение комментариев
         public async Task<IEnumerable<Comment>> GetAllAsync(
             string? text, 
             int? idTask, 
@@ -45,17 +46,20 @@ namespace ProjectManagementRestAPI.Repositories
                 .Take(limit)
                 .ToListAsync();
         }
-
+        
+        //Получение комментария по ID
         public async Task<Comment?> GetByIdAsync(int id)
         {
             return await _context.Comments.FindAsync(id);
         }
 
+        //Получение комментариев к задаче
         public async Task<IEnumerable<Comment>> GetCommentByTask(int idTask)
         {
             return await _context.Comments.OrderBy(p => p.Id).Where(p => p.ID_Task == idTask).ToListAsync();
         }
 
+        //Создание комменатрия
         public async Task<Comment?> CreateAsync(Comment comment)
         {
             var task = await _context.Tasks.AnyAsync(p => p.Id == comment.ID_Task);
@@ -67,6 +71,7 @@ namespace ProjectManagementRestAPI.Repositories
             return comment;
         }
 
+        //Обновление комментария
         public async Task<bool> UpdateAsync(Comment comment)
         {
             var task = await _context.Tasks.AnyAsync(p => p.Id == comment.ID_Task);
@@ -82,6 +87,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Удаление комментария
         public async Task<bool> DeleteAsync(int id)
         {
             var comment = await _context.Comments.FindAsync(id);

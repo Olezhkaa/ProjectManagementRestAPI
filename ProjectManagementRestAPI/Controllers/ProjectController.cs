@@ -60,6 +60,7 @@ namespace ProjectManagementRestAPI.Controllers
             return delete ? NoContent() : NotFound();
         }
 
+        //Добавление пользователя в проект
         [HttpPost("UserProject")]
         public async Task<ActionResult<UsersProject?>> AddUserProject(UsersProject usersProject)
         {
@@ -68,6 +69,7 @@ namespace ProjectManagementRestAPI.Controllers
             return CreatedAtAction(nameof(GetUserProject), new { id = createUsersProject.Id }, createUsersProject);
         }
 
+        //Удаление пользователя из проекта
         [HttpDelete("UserProject/{id}")]
         public async Task<IActionResult> DeleteUsersProjectAsync(int id)
         {
@@ -75,12 +77,14 @@ namespace ProjectManagementRestAPI.Controllers
             return delete ? NoContent() : NotFound();
         }
 
+        //Получение всех пользователей в проекте
         [HttpGet("UserProject/Project/{idProject}")]
         public async Task<ActionResult<IEnumerable<UsersProject>>> GetUsersFromProject(int idProject)
         {
             return Ok(await _service.GetUsersFromProjectAsync(idProject));
         }
 
+        //Получение Пользователь-Проект по ID
         [HttpGet("UsersProject/{id}")]
         public async Task<ActionResult<IEnumerable<UsersProject>>> GetUserProject(int id)
         {

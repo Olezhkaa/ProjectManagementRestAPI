@@ -17,7 +17,7 @@ namespace ProjectManagementRestAPI.Controllers
             _service = service;
         }
 
-        // Получить все проекты
+        // Получить всех пользователей
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Users>>> GetUsers(
             string? login,
@@ -32,7 +32,7 @@ namespace ProjectManagementRestAPI.Controllers
             return Ok(await _service.GetAllAsync(login, surname, name, email, sortBy, desk, limit, cursor));
         }
 
-        // Получить проект по ID
+        // Получить пользователя по ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Users>> GetUsers(int id)
         {
@@ -40,7 +40,7 @@ namespace ProjectManagementRestAPI.Controllers
             return users == null ? NotFound() :Ok(users);
         }
 
-        // Создать новый проект
+        // Создать нового пользователя
         [HttpPost]
         public async Task<ActionResult<Users>> CreateUsers(Users users)
         {
@@ -48,7 +48,7 @@ namespace ProjectManagementRestAPI.Controllers
             return CreatedAtAction(nameof(GetUsers), new { id = createUsers.Id }, createUsers);
         }
 
-        // Обновить проект
+        // Обновить пользователя
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUsers(int id, Users users)
         {
@@ -59,7 +59,7 @@ namespace ProjectManagementRestAPI.Controllers
 
         }
 
-        // Удалить проект
+        // Удалить пользователя
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsers(int id)
         {

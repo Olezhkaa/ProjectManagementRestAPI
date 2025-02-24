@@ -13,16 +13,19 @@ namespace ProjectManagementRestAPI.Repositories
             _context = context;
         }
 
+        //Получения всех проектов
         public async Task<IEnumerable<Project>> GetAllAsync()
         {
             return await _context.Projects.OrderBy(p => p.Id).ToListAsync();
         } 
 
+        //Получение проекта по ID
         public async Task<Project?> GetByIdAsync(int id)
         {
             return await _context.Projects.FindAsync(id);
         }
 
+        //Создание проекта
         public async Task<Project> CreateAsync(Project project)
         {
             project.DateCreate = DateTime.Now;
@@ -32,6 +35,7 @@ namespace ProjectManagementRestAPI.Repositories
             return project;
         }
 
+        //Обновление проекта
         public async Task<bool> UpdateAsync(Project project)
         {
             var existingProject = await _context.Projects.FindAsync(project.Id);
@@ -45,6 +49,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Удаление проекта
         public async Task<bool> DeleteAsync(int id)
         {
             var project = await _context.Projects.FindAsync(id);
@@ -55,6 +60,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Добавление пользователя в проект
         public async Task<UsersProject?> AddUserProjectAsync(UsersProject usersProject)
         {
             var user = await _context.Users.AnyAsync(p => p.Id == usersProject.ID_User);
@@ -66,6 +72,7 @@ namespace ProjectManagementRestAPI.Repositories
             return usersProject;
         }
 
+        //Удаление пользователя из проекта
         public async Task<bool> DeleteUsersProjectAsync(int id)
         {
             var userProject = await _context.UsersProjects.FindAsync(id);
@@ -76,6 +83,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Получение всех пользователей в проекте
         public async Task<IEnumerable<UsersProject>> GetUsersFromProjectAsync(int idProject)
         {
             return await _context.UsersProjects
@@ -84,6 +92,7 @@ namespace ProjectManagementRestAPI.Repositories
                 .ToListAsync();
         }
 
+        //Получение Пользовтель-Проект по ID
         public async Task<UsersProject?> GetUserProjectAsync(int id)
         {
             return await _context.UsersProjects.FirstOrDefaultAsync(p => p.Id == id);

@@ -13,6 +13,7 @@ namespace ProjectManagementRestAPI.Repositories
             _context = context;
         }
 
+        //Получение всех пользователей
         public async Task<IEnumerable<Users>> GetAllAsync(string? login,
             string? surname, 
             string? name,
@@ -50,11 +51,13 @@ namespace ProjectManagementRestAPI.Repositories
                 .ToListAsync();
         }
 
+        //Получение пользователя по ID
         public async Task<Users?> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
+        //Создание пользователя
         public async Task<Users> CreateAsync(Users users)
         {
             users.DateCreate = DateTime.Now;
@@ -64,6 +67,7 @@ namespace ProjectManagementRestAPI.Repositories
             return users;
         }
 
+        //Обновление пользователя
         public async Task<bool> UpdateAsync(Users users)
         {
             var existingUsers = await _context.Users.FindAsync(users.Id);
@@ -79,6 +83,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Удаление пользователя
         public async Task<bool> DeleteAsync(int id)
         {
             var users = await _context.Users.FindAsync(id);
@@ -89,6 +94,7 @@ namespace ProjectManagementRestAPI.Repositories
             return true;
         }
 
+        //Получение всех пользователей в проекте
         public async Task<IEnumerable<UsersProject>> GetUsersFromProjectAsync(int idProject)
         {
             return await _context.UsersProjects

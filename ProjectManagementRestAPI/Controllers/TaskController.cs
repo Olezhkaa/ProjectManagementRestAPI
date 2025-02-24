@@ -16,6 +16,7 @@ namespace ProjectManagementRestAPI.Controllers
             _service = service;
         }
 
+        //Получение всех задач
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Model.Task>>> GetAll(string? title,
             int? idStatusTask,
@@ -28,6 +29,7 @@ namespace ProjectManagementRestAPI.Controllers
             return Ok(await _service.GetAllAsync(title, idProject, idStatusTask, sortBy, desk, limit, cursor));
         }
 
+        //Получение задачи по ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Model.Task?>> GetTask(int id)
         {
@@ -35,26 +37,30 @@ namespace ProjectManagementRestAPI.Controllers
             return task == null ? NotFound() : Ok(task);
         }
 
+        //Просмотр всех статусов задач
         [HttpGet("StatusTasks")]
         public async Task<ActionResult<StatusTask>> GetAllStatusTask()
         {
             return Ok(await _service.GetAllStatusTasksAsync());
         }
 
+        //Получение всех задач в проекте
         [HttpGet("TaskByProject/{idProject}")]
         public async Task<ActionResult<IEnumerable<Model.Task>>> GetTaskByProject(int idProject)
         {
             return Ok(await _service.GetTaskByProjectAsync(idProject));
         }
 
+        //Получение задач по статусу выполнения
         [HttpGet("TaskByStatus/{idStatusTask}")]
         public async Task<ActionResult<IEnumerable<Model.Task>>> GetTaskByStatus(int idStatusTask)
         {
             return Ok(await _service.GetTaskByStatusAsync(idStatusTask));
         }
 
+        //Создание задачи
         [HttpPost]
-        public async Task<ActionResult<Model.Task>> CreateAsync(Model.Task task)
+        public async Task<ActionResult<Model.Task>> Create(Model.Task task)
         {
             var creationTask = await _service.CreateAsync(task);
 
@@ -63,6 +69,7 @@ namespace ProjectManagementRestAPI.Controllers
             return CreatedAtAction(nameof(GetTask), new { id = creationTask.Id }, creationTask);
         }
 
+        //Обновление задачи
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Model.Task task)
         {
@@ -72,6 +79,7 @@ namespace ProjectManagementRestAPI.Controllers
             return updateTask ? NoContent() : NotFound();
         }
 
+        //Удаление задачи
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
