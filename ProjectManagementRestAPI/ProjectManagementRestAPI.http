@@ -1,0 +1,6 @@
+@ProjectManagementRestAPI_HostAddress = http://localhost:5245
+
+GET {{ProjectManagementRestAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
