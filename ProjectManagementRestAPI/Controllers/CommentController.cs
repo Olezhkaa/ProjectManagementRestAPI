@@ -16,9 +16,14 @@ namespace ProjectManagementRestAPI.Controllers
         }
         //Все комментарии
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Comment>>> GetAll(string? text,
+            int? idTask,
+            string? sortBy,
+            bool desk = false,
+            int limit = 10,
+            int cursor = 0)
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await _service.GetAllAsync(text, idTask, sortBy, desk, limit, cursor));
         }
 
         // Получить комментарий по ID

@@ -14,9 +14,36 @@ namespace ProjectManagementRestAPI.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync(
+            string? text, 
+            int? idTask, 
+            string? sortBy,
+            bool desk,  
+            int limit, 
+            int cursor)
         {
-            return await _context.Comments.OrderBy(p => p.Id).ToListAsync();
+            var query = _context.Comments.AsQueryable();
+
+            //Фильтрация 
+            if (!string.IsNullOrWhiteSpace(text)) query = query.Where(p => p.Text == text);
+            if (idTask.HasValue) query = query.Where(p => p.ID_Task == idTask);
+
+            //Сортировка
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                query = sortBy.ToLower() switch
+                {
+                    "text" => desk ? query.OrderByDescending(p => p.Text) : query.OrderBy(p => p.Text),
+                    "idTask" => desk ? query.OrderByDescending(p => p.ID_Task) : query.OrderBy(p => p.ID_Task),
+                    _ => query.OrderBy(p => p.Id)
+                };
+            }
+
+            //Пагинация
+            return await query
+                .Skip(limit * cursor)
+                .Take(limit)
+                .ToListAsync();
         }
 
         public async Task<Comment?> GetByIdAsync(int id)

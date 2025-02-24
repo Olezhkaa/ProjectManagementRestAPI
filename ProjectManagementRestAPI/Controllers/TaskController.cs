@@ -17,9 +17,15 @@ namespace ProjectManagementRestAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Model.Task>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Model.Task>>> GetAll(string? title,
+            int? idStatusTask,
+            int? idProject,
+            string? sortBy,
+            bool desk = false,
+            int limit = 10,
+            int cursor = 0)
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await _service.GetAllAsync(title, idProject, idStatusTask, sortBy, desk, limit, cursor));
         }
 
         [HttpGet("{id}")]

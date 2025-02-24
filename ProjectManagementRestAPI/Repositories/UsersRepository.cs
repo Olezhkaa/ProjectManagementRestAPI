@@ -13,9 +13,41 @@ namespace ProjectManagementRestAPI.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Users>> GetAllAsync()
+        public async Task<IEnumerable<Users>> GetAllAsync(string? login,
+            string? surname, 
+            string? name,
+            string? email,
+            string? sortBy,
+            bool desk,
+            int limit,
+            int cursor)
         {
-            return await _context.Users.OrderBy(p => p.Id).ToListAsync();
+            var query = _context.Users.AsQueryable();
+
+            //Фильтрация
+            if (!string.IsNullOrWhiteSpace(login)) query = query.Where(p => p.Login == login);
+            if (!string.IsNullOrWhiteSpace(surname)) query = query.Where(p => p.Surname == surname);
+            if (!string.IsNullOrWhiteSpace(name)) query = query.Where(p => p.Name == name);
+            if (!string.IsNullOrWhiteSpace(email)) query = query.Where(p => p.Email == email);
+
+            //Сортировка
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                query = sortBy.ToLower() switch
+                {
+                    "login" => desk ? query.OrderByDescending(p => p.Login) : query.OrderBy(p => p.Login),
+                    "surname" => desk ? query.OrderByDescending(p => p.Surname) : query.OrderBy(p => p.Surname),
+                    "name" => desk ? query.OrderByDescending(p => p.Name) : query.OrderBy(p => p.Name),
+                    "email" => desk ? query.OrderByDescending(p => p.Email) : query.OrderBy(p => p.Email),
+                    _ => query.OrderBy(p => p.Id),
+                };
+            }
+
+            //Пагинация8
+            return await query
+                .Skip(limit * cursor)
+                .Take(limit)
+                .ToListAsync();
         }
 
         public async Task<Users?> GetByIdAsync(int id)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagementRestAPI.DataBase;
 using ProjectManagementRestAPI.Model;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ProjectManagementRestAPI.Repositories
 {
@@ -14,10 +15,38 @@ namespace ProjectManagementRestAPI.Repositories
         }
 
         // Получить все задачи с проектами и статусами
-        public async Task<IEnumerable<Model.Task>> GetAllAsync()
+        public async Task<IEnumerable<Model.Task>> GetAllAsync(
+            string? title,
+            int? idStatusTask,
+            int? idProject,
+            string sortBy,
+            bool desk,
+            int limit,
+            int cursor)
         {
-            return await _context.Tasks
-                .OrderBy(t => t.Id)
+            var query = _context.Tasks.AsQueryable();
+
+            // Фильтрация
+            if (!string.IsNullOrWhiteSpace(title)) query = query.Where(p => p.Title == title);
+            if (idStatusTask.HasValue) query = query.Where(p => p.ID_Status_Task == idStatusTask);
+            if (idProject.HasValue) query = query.Where(p => p.ID_Project == idProject);
+
+            //Сортировка
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                query = sortBy.ToLower() switch
+                {
+                    "title" => desk ? query.OrderByDescending(p => p.Title) : query.OrderBy(p => p.Title),
+                    "ID_Project" => desk ? query.OrderByDescending(p => p.ID_Project) : query.OrderBy(p => p.ID_Project),
+                    "ID_Status_Task" => desk ? query.OrderByDescending(p => p.ID_Status_Task) : query.OrderBy(p => p.ID_Status_Task),
+                    _ => query.OrderBy(p => p.Id)
+                };
+            }
+
+            //Пагинация
+            return await query
+                .Skip(limit * cursor)
+                .Take(limit)
                 .ToListAsync();
         }
 

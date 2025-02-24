@@ -12,9 +12,14 @@ namespace ProjectManagementRestAPI.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync(string? text,
+            int? idTask,
+            string? sortBy,
+            bool desk,
+            int limit,
+            int cursor)
         {
-            return await _repository.GetAllAsync();
+            return await _repository.GetAllAsync(text, idTask, sortBy, desk, limit, cursor);
         }
 
         public async Task<Comment?> GetByIdAsync(int id)

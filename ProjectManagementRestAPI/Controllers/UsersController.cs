@@ -19,9 +19,17 @@ namespace ProjectManagementRestAPI.Controllers
 
         // Получить все проекты
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUserss()
+        public async Task<ActionResult<IEnumerable<Users>>> GetUsers(
+            string? login,
+            string? surname,
+            string? name,
+            string? email,
+            string? sortBy,
+            bool desk = false,
+            int limit = 10,
+            int cursor = 0)
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await _service.GetAllAsync(login, surname, name, email, sortBy, desk, limit, cursor));
         }
 
         // Получить проект по ID
